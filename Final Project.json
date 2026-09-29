@@ -1,0 +1,1002 @@
+{
+  "name": "Final Project",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "Stock Management",
+        "height": 352,
+        "width": 1472,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -464,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "5493b188-efd2-440f-a4b5-f56bb6b90f65",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Orders Management",
+        "height": 368,
+        "width": 1124
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -96,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "66cec6d3-445c-4313-83a0-7e4dc6fe98d6",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Daily Low Stock Alert",
+        "height": 352,
+        "width": 1184,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -432,
+        624
+      ],
+      "typeVersion": 1,
+      "id": "f087bceb-ad89-4436-921f-3134fce30dac",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "Chatbot\n",
+        "height": 496,
+        "width": 992,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -448,
+        1056
+      ],
+      "typeVersion": 1,
+      "id": "7f20d381-e4ee-4432-bffa-433105b77901",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.message }}",
+        "options": {
+          "systemMessage": "أنت مساعد خدمة العملاء الذكي للمتجر.\nوظيفتك:\n1. الإجابة على استفسارات العملاء بأسلوب مهذب وواضح.\n2. إذا طلب العميل معرفة حالة أوردر، استخدم الأداة المتاحة للبحث برقم الطلب (Order_ID) وإعطائه التفاصيل.\n3. إذا سأل عن توفر منتج أو سعره، تحقق من شيت المخزون عبر الأداة وأخبره بالتفاصيل.\n4. إذا لم تجد الطلب، اطلب منه التأكد من رقم Order_ID بكل لطف."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -128,
+        1136
+      ],
+      "id": "e6146fd4-2c4a-4661-b84e-f6a75ae86890",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "body.items",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        -96
+      ],
+      "id": "a3b2f684-b696-4bdd-a71e-70dcbf9755d9",
+      "name": "Separate items"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c",
+          "mode": "list",
+          "cachedResultName": "Final Project",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Inventory Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Product_ID",
+              "lookupValue": "={{ $json.product_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        80,
+        -96
+      ],
+      "id": "68057072-3f36-489a-b18f-7f421818a786",
+      "name": "Get Current Stock",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1K63f3QZRLwEo6sC",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3630937b-08dc-444e-ac09-d083fc8b1bf4",
+              "name": "new_stock",
+              "value": "={{ $json.Stock_Quantity - $('Separate items').item.json.quantity }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        272,
+        -96
+      ],
+      "id": "a3dde9dd-89a8-456f-9f2f-6db4acc4323f",
+      "name": "Calculate New Stock"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c",
+          "mode": "list",
+          "cachedResultName": "Final Project",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Inventory Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Stock_Quantity": "={{ $json.new_stock }}",
+            "Product_ID": "={{ $('Get Current Stock').item.json.Product_ID }}"
+          },
+          "matchingColumns": [
+            "Product_ID"
+          ],
+          "schema": [
+            {
+              "id": "Product_ID",
+              "displayName": "Product_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product_Name",
+              "displayName": "Product_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Price",
+              "displayName": "Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Stock_Quantity",
+              "displayName": "Stock_Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        496,
+        -96
+      ],
+      "id": "7cfb7ec4-0070-42f7-a896-573e926b4673",
+      "name": "Update Inventory",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1K63f3QZRLwEo6sC",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "98428b75-30ab-4979-9f6b-2c32d56f5abb",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -352,
+        -96
+      ],
+      "id": "5c96bc54-4c8b-49dd-a04d-3183768113e4",
+      "name": "Receive Order To Inventory sheet",
+      "webhookId": "98428b75-30ab-4979-9f6b-2c32d56f5abb"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c",
+          "mode": "list",
+          "cachedResultName": "Final Project",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 225811279,
+          "mode": "list",
+          "cachedResultName": "Orders Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c/edit#gid=225811279"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Address": "={{ $('Receive Order To Inventory sheet').item.json.body.address }}",
+            "Customer_Name": "={{ $('Receive Order To Inventory sheet').item.json.body.customer_name }}",
+            "Quantity": "={{ $json.quantity }}",
+            "Order_Date": "={{ $('Receive Order To Inventory sheet').item.json.body.order_date }}",
+            "Phone": "={{ $('Receive Order To Inventory sheet').item.json.body.phone }}",
+            "Product_ID": "={{ $json.product_id }}",
+            "Product_Name": "={{ $json.product_name }}",
+            "Total_Price": "={{ $json.price }}",
+            "Order_ID": "={{ $json.order_id[0] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Order_ID",
+              "displayName": "Order_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product_ID",
+              "displayName": "Product_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product_Name",
+              "displayName": "Product_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Quantity",
+              "displayName": "Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Total_Price",
+              "displayName": "Total_Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Customer_Name",
+              "displayName": "Customer_Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Order_Date",
+              "displayName": "Order_Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        320,
+        304
+      ],
+      "id": "98f273ac-b766-4f0c-88cd-4c31fe5d832a",
+      "name": "Save Order in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1K63f3QZRLwEo6sC",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "product_name"
+            },
+            {
+              "fieldToAggregate": "quantity"
+            },
+            {
+              "fieldToAggregate": "price"
+            },
+            {
+              "fieldToAggregate": "product_id"
+            },
+            {
+              "fieldToAggregate": "order_id"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        128,
+        304
+      ],
+      "id": "164a2173-6ce2-4da2-8fd1-777d08a1158c",
+      "name": "Combine order items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f539e545-f1c9-496c-a31e-821f54fd9680",
+              "name": "Formatted_message",
+              "value": "=📦 *طلب جديد بقائمة التجهيز!*\n━━━━━━━━━━━━━━━━━━\n🆔 *رقم الطلب:*\n{{ $json.Order_ID }}\n\n👤 *اسم العميل:*\n{{ $json.Customer_Name }}\n📞 *رقم الهاتف:*\n{{ $json.Phone }}\n📍 *العنوان:* \n{{ $json.Address }}\n📅 *تاريخ الطلب:*\n{{ $json.Order_Date ? $json.Order_Date.split('T')[0] : $json.Order_Date }}\n\n🛒 *تفاصيل المنتجات:*\n• *أكواد المنتجات:* \n{{ Array.isArray($json.Product_ID) ? $json.Product_ID.join(' , ') : $json.Product_ID }}\n• *الكميات:*\n{{ Array.isArray($json.Quantity) ? $json.Quantity.join(' , ') : $json.Quantity }}\n• *الأسعار:*\n{{ Array.isArray($('Combine order items').item.json.price) ? $('Combine order items').item.json.price.join(' , ') : $('Combine order items').item.json.price }} EGP\n\n💰 *إجمالي الأوردر:* \n{{ (Array.isArray($('Combine order items').item.json.price) ? $('Combine order items').item.json.price : $('Combine order items').item.json.price.toString().split(',')).reduce((sum, p) => sum + Number(p), 0) }} EGP",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        544,
+        304
+      ],
+      "id": "67ed8ea4-9078-4c5f-8126-0bb1d05c0f9a",
+      "name": "Format Telegram Invoice"
+    },
+    {
+      "parameters": {
+        "chatId": "6359625282",
+        "text": "={{ $json.Formatted_message }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        768,
+        304
+      ],
+      "id": "7535ed85-17f8-4e09-b48e-811cd1cb0535",
+      "name": "Notify Prep Team",
+      "webhookId": "864cffad-1ed0-448c-bb8f-c3dfeb3f04fe",
+      "credentials": {
+        "telegramApi": {
+          "id": "TlrGAW51vzVmErV2",
+          "name": "Telegram account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c",
+          "mode": "list",
+          "cachedResultName": "Final Project",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Inventory Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -128,
+        720
+      ],
+      "id": "f6601b78-47a6-4214-925d-a35fc4c5b114",
+      "name": "Read Inventory",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1K63f3QZRLwEo6sC",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c88ac250-c2c8-4779-9ab4-7ed53c5c3100",
+              "leftValue": "={{ $json.Stock_Quantity }}",
+              "rightValue": 20,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        64,
+        720
+      ],
+      "id": "053d70ae-2580-46eb-abaa-3ce096ec94f7",
+      "name": "Filter Check Low Stock"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "Product_ID"
+            },
+            {
+              "fieldToAggregate": "Product_Name"
+            },
+            {
+              "fieldToAggregate": "Stock_Quantity"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        288,
+        704
+      ],
+      "id": "6462f61b-e30a-4ae2-8c04-573c57504cb3",
+      "name": "Summarize Low Stock"
+    },
+    {
+      "parameters": {
+        "sendTo": "shimaaelzadey@gmail.com",
+        "subject": "تنبيه هام: انخفاض مخزون بعض المنتجات",
+        "emailType": "text",
+        "message": "=⚠️ تنبيه انخفاض المخزون اليومي!  برجاء العلم أن المنتجات التالية قد أوشكت على النفاذ في المخزون:  {{   $json.Product_Name.map((name, index) => '• ' + name + ' (الكود: ' + $json.Product_ID[index] + ') - المتبقي: ' + $json.Stock_Quantity[index] + ' قطعة').join('\\n') }}  يرجى إعادة التزويد في أسرع وقت.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        704
+      ],
+      "id": "7cc15961-7a4f-4052-99ea-6e40de33b6ee",
+      "name": "Alert Inventory Manager",
+      "webhookId": "fa90eee3-f86f-4491-8659-edc61f734041",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "LwRDGfldR6eUEXFg",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -288,
+        1344
+      ],
+      "id": "c0b68dfb-15eb-49de-acff-d49daa28ecfd",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "3BmqG4VN1vNryn6n",
+          "name": "Google Gemini(PaLM) Api account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.sessionId }}",
+        "contextWindowLength": 1000
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -128,
+        1344
+      ],
+      "id": "2d9d9b03-4f22-4c94-abe4-a48a04e86e14",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9bb6085b-0ee4-423c-a0b3-36c113adfac7",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -320,
+        1136
+      ],
+      "id": "c454ab99-ae6b-46b9-a2b9-0d5acea564dc",
+      "name": "Webhook chatbot",
+      "webhookId": "9bb6085b-0ee4-423c-a0b3-36c113adfac7"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        176,
+        1136
+      ],
+      "id": "6221459a-5c38-49b6-8ac9-83e8469e1f26",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c",
+          "mode": "list",
+          "cachedResultName": "Final Project",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 225811279,
+          "mode": "list",
+          "cachedResultName": "Orders Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c/edit#gid=225811279"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        32,
+        1344
+      ],
+      "id": "e2ab4adf-e819-4494-a261-18dbdcc8a516",
+      "name": "Read Order Detalis",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1K63f3QZRLwEo6sC",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c",
+          "mode": "list",
+          "cachedResultName": "Final Project",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Inventory Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1syFuYK5-ch-ol7RnVvqX1eVyWsnhZYn6olsqz-5Fb5c/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        1344
+      ],
+      "id": "c0033def-2f15-4630-b69b-ff0e58744cdb",
+      "name": "Read Inventory detalis",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1K63f3QZRLwEo6sC",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// استدعاء البيانات مباشرة من عقدة الويب هوك بالاسم الصحيح\nconst inputData = $('Receive Order To Inventory sheet').first().json;\n\n// استخراج الـ body والـ items بأمان\nconst body = inputData.body || inputData;\nconst itemsArray = body.items || [];\n\n// إعادة صياغة المنتجات لتخرج منفردة وصحيحة\nreturn itemsArray.map(item => {\n  return { \n    json: {\n      ...item,\n      order_id: body.order_id,\n      customer_name: body.customer_name,\n      phone: body.phone,\n      address: body.address\n    } \n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        -96
+      ],
+      "id": "ec4588ca-ea06-403a-81ce-5c684ac58344",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 12,
+              "triggerAtMinute": 12
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -336,
+        720
+      ],
+      "id": "cab083a5-d35a-4ffc-aa8b-02b2c07f9ddf",
+      "name": "Schedule Daily 12 AM"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Separate items": {
+      "main": [
+        [
+          {
+            "node": "Get Current Stock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Current Stock": {
+      "main": [
+        [
+          {
+            "node": "Calculate New Stock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate New Stock": {
+      "main": [
+        [
+          {
+            "node": "Update Inventory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receive Order To Inventory sheet": {
+      "main": [
+        [
+          {
+            "node": "Separate items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Order in sheet": {
+      "main": [
+        [
+          {
+            "node": "Format Telegram Invoice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine order items": {
+      "main": [
+        [
+          {
+            "node": "Save Order in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Telegram Invoice": {
+      "main": [
+        [
+          {
+            "node": "Notify Prep Team",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Inventory": {
+      "main": [
+        [
+          {
+            "node": "Filter Check Low Stock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Check Low Stock": {
+      "main": [
+        [
+          {
+            "node": "Summarize Low Stock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize Low Stock": {
+      "main": [
+        [
+          {
+            "node": "Alert Inventory Manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook chatbot": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Order Detalis": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Inventory detalis": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Inventory": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Combine order items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Daily 12 AM": {
+      "main": [
+        [
+          {
+            "node": "Read Inventory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "33170a9f-a87e-45b0-953f-d40532b59287",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6a391df3a3fe4f148aedb37ccc69b278da88c6c63807e3687232d859762300ea"
+  },
+  "nodeGroups": [],
+  "id": "jvvApr3HjWjn94gK",
+  "tags": []
+}

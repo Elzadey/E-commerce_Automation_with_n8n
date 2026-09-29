@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)file:///C:/Users/shima/Downloads/index-2.html -->
+<html lang="ar" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOIRE — Official Website</title>
+<link href="./NOIRE — Official Website_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #000000;
+    --gray: #767676;
+    --light-gray: #f2f2f2;
+    --border: #e5e5e5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: 'Inter', 'Cairo', sans-serif;
+    font-weight: 400; -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+  /* --- ZARA STYLE NAV --- */
+  header {
+    position: fixed; top: 0; width: 100%; z-index: 50;
+    background: rgba(255, 255, 255, 0.98);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 30px; font-size: 12px; letter-spacing: 0.05em;
+  }
+  .nav-left { display: flex; gap: 24px; align-items: center; }
+  .burger { display: flex; flex-direction: column; gap: 4px; width: 20px; }
+  .burger span { height: 1px; background: var(--ink); width: 100%; }
+  .logo { font-size: 28px; font-weight: 600; letter-spacing: 0.15em; font-family: 'Inter', sans-serif; }
+  .nav-right { display: flex; gap: 20px; font-weight: 500; text-transform: uppercase; }
+  .nav-right button { font-weight: 500; font-size: 11px; text-transform: uppercase; position: relative; }
+  .badge {
+    position: absolute; top: -6px; right: -12px;
+    font-size: 9px; background: var(--ink); color: var(--bg);
+    width: 15px; height: 15px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  }
+
+  /* --- ZARA STYLE HERO --- */
+  .hero {
+    height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=2000') center/cover;
+    position: relative;
+  }
+  .hero-text {
+    position: absolute; bottom: 40px; text-align: center; color: #fff; width: 100%;
+  }
+  .hero-text h1 { font-size: 16px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+  .hero-cta { border: 1px solid #fff; padding: 10px 40px; font-size: 11px; text-transform: uppercase; }
+
+  /* --- ZARA STYLE GRID --- */
+  .collection-container { padding: 80px 30px; }
+  .filters {
+    display: flex; justify-content: space-between; margin-bottom: 30px;
+    font-size: 11px; text-transform: uppercase; font-weight: 500;
+  }
+  .tabs { display: flex; gap: 20px; }
+  .tab.active { text-decoration: underline; text-underline-offset: 4px; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
+  }
+  @media(max-width: 1000px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .card { cursor: pointer; position: relative; }
+  .card-img-wrap {
+    position: relative; aspect-ratio: 2/3; overflow: hidden; background: var(--light-gray);
+  }
+  .card-img-wrap img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+  .card-img-wrap img.hover-img { opacity: 0; }
+  .card:hover .hover-img { opacity: 1; }
+  .card:hover .main-img { opacity: 0; }
+
+  .card-info { padding: 12px 0; font-size: 12px; display: flex; justify-content: space-between; }
+  .card-name { font-weight: 400; color: var(--gray); text-transform: uppercase; }
+  .card-price { font-weight: 500; }
+
+  /* Quick Add Overlay */
+  .quick-add {
+    position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.9);
+    padding: 15px; transform: translateY(100%); transition: transform 0.3s ease;
+    display: flex; flex-direction: column; gap: 10px; z-index: 2;
+  }
+  .card:hover .quick-add { transform: translateY(0); }
+  .sizes { display: flex; gap: 10px; justify-content: center; font-size: 11px; }
+  .size-btn { padding: 5px; border-bottom: 1px solid transparent; }
+  .size-btn:hover, .size-btn.active { border-bottom: 1px solid var(--ink); }
+  .add-btn { background: var(--ink); color: #fff; padding: 10px; font-size: 11px; text-transform: uppercase; width: 100%; }
+  .add-btn:disabled { background: var(--gray); cursor: not-allowed; }
+
+  /* --- CHATBOT WIDGET --- */
+  .chat-icon {
+    position: fixed; bottom: 30px; right: 30px; z-index: 100;
+    width: 50px; height: 50px; background: var(--ink); color: #fff;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 20px; transition: transform 0.2s;
+  }
+  .chat-icon:hover { transform: scale(1.05); }
+
+  .chat-window {
+    position: fixed; bottom: 90px; right: 30px; z-index: 100;
+    width: 340px; height: 450px; background: #fff;
+    border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    display: flex; flex-direction: column; transform: translateY(20px);
+    opacity: 0; pointer-events: none; transition: all 0.3s ease; border-radius: 8px; overflow: hidden;
+  }
+  .chat-window.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+  .chat-head {
+    background: var(--ink); color: #fff; padding: 15px;
+    display: flex; justify-content: space-between; font-size: 13px; font-weight: 500;
+  }
+  .chat-body {
+    flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
+    background: #fafafa; font-size: 13px;
+  }
+  .msg { max-width: 80%; padding: 10px 12px; border-radius: 4px; line-height: 1.4; }
+  .msg.bot { background: #fff; border: 1px solid var(--border); align-self: flex-start; }
+  .msg.user { background: var(--light-gray); align-self: flex-end; }
+
+  .chat-foot { padding: 10px; border-top: 1px solid var(--border); display: flex; background: #fff; }
+  .chat-foot input {
+    flex: 1; border: none; padding: 10px; outline: none; font-size: 13px; font-family: inherit;
+  }
+  .chat-foot button { font-weight: 600; font-size: 12px; padding: 0 10px; }
+
+  /* --- SLIDE-OUT CART --- */
+  .cart-drawer {
+    position: fixed; top: 0; right: 0; width: 400px; height: 100vh;
+    background: #fff; z-index: 200; box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+    transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: flex; flex-direction: column;
+  }
+  .cart-drawer.open { transform: translateX(0); }
+  .cart-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 150;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .cart-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .cart-head { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; }
+  .cart-items { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+  .cart-item { display: flex; gap: 15px; font-size: 12px; }
+  .cart-item img { width: 70px; height: 100px; object-fit: cover; }
+  .cart-item-info { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .cart-item-name { text-transform: uppercase; font-weight: 500; }
+  .cart-item-price { color: var(--gray); }
+  .remove-btn { margin-top: auto; align-self: flex-start; text-decoration: underline; color: var(--gray); font-size: 11px; }
+
+  .cart-foot { padding: 20px; border-top: 1px solid var(--border); }
+  .total { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 20px; }
+  .checkout-btn { width: 100%; background: var(--ink); color: #fff; padding: 15px; font-size: 12px; text-transform: uppercase; font-weight: 500; }
+
+  /* --- SHIPPING MODAL --- */
+  .ship-modal {
+    position: fixed; inset: 0; z-index: 250; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity .3s ease; padding: 20px;
+  }
+  .ship-modal.open { opacity: 1; pointer-events: auto; }
+  .ship-modal-bg { position: absolute; inset: 0; background: rgba(0,0,0,.5); }
+  .ship-modal-box {
+    position: relative; background: #fff; width: min(420px, 100%);
+    padding: 32px 28px; max-height: 90vh; overflow-y: auto; border-radius: 4px;
+  }
+  .ship-modal-box h3 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+  .ship-sub { font-size: 12.5px; color: var(--gray); margin-bottom: 20px; }
+  .ship-field { margin-bottom: 14px; }
+  .ship-field label { display: block; font-size: 11.5px; color: var(--gray); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .03em; }
+  .ship-field input, .ship-field textarea {
+    width: 100%; border: 1px solid var(--border); padding: 10px 12px; font-size: 13px; font-family: inherit;
+  }
+  .ship-field textarea { min-height: 60px; resize: vertical; }
+  .submit-order { width: 100%; background: var(--ink); color: #fff; padding: 14px; font-size: 12px; text-transform: uppercase; margin-top: 6px; }
+  .submit-order:disabled { opacity: .5; }
+  .ship-modal-close { position: absolute; top: 14px; left: 14px; font-size: 16px; }
+  .ship-status { font-size: 12.5px; margin-top: 12px; text-align: center; }
+  .ship-status.ok { color: #2e7d4f; }
+  .ship-status.err { color: #b3382a; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-left">
+    <button class="burger"><span></span><span></span><span></span></button>
+    <div class="logo">NOIRE</div>
+  </div>
+  <div class="nav-right">
+    <button>Search</button>
+    <button>Log In</button>
+    <button id="open-cart">Cart <span class="badge" id="cart-badge" style="display:none">0</span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <h1>New Collection</h1>
+    <a href="file:///C:/Users/shima/Downloads/index-2.html#shop" class="hero-cta">View Products</a>
+  </div>
+</section>
+
+<div class="collection-container" id="shop">
+  <div class="filters">
+    <div class="tabs" id="tabs"><button class="tab active" data-cat="all">All</button><button class="tab " data-cat="Hoodies">Hoodies</button><button class="tab " data-cat="Tops">Tops</button><button class="tab " data-cat="Denim">Denim</button><button class="tab " data-cat="Shoes">Shoes</button><button class="tab " data-cat="Outerwear">Outerwear</button><button class="tab " data-cat="Dresses">Dresses</button><button class="tab " data-cat="Knitwear">Knitwear</button><button class="tab " data-cat="Trousers">Trousers</button></div>
+    <div>Sort: Newest</div>
+  </div>
+  <div class="grid" id="grid">
+    <div class="card">
+      <div class="card-img-wrap">
+        <img src="./NOIRE — Official Website_files/photo-1620799140408-edc6dcb6d633" class="main-img">
+        <img src="./NOIRE — Official Website_files/photo-1576995853123-5a10305d93c0" class="hover-img">
+        
+        <div class="quick-add">
+          <div class="sizes"><span>Black · Size M</span></div>
+          <button class="add-btn" onclick="addToCart(&#39;P101&#39;)">Add to Bag</button>
+        </div>
+      </div>
+      <div class="card-info">
+        <span class="card-name">Black Oversized Hoodie</span>
+        <span class="card-price">450 EGP</span>
+      </div>
+    </div>
+  
+    <div class="card">
+      <div class="card-img-wrap">
+        <img src="./NOIRE — Official Website_files/photo-1594223274512-ad4803739b7c" class="main-img">
+        <img src="./NOIRE — Official Website_files/photo-1550639525-c97d455acf70" class="hover-img">
+        
+        <div class="quick-add">
+          <div class="sizes"><span>Beige · Size S</span></div>
+          <button class="add-btn" onclick="addToCart(&#39;P102&#39;)">Add to Bag</button>
+        </div>
+      </div>
+      <div class="card-info">
+        <span class="card-name">Ribbed Long Sleeve Top</span>
+        <span class="card-price">250 EGP</span>
+      </div>
+    </div>
+  
+    <div class="card">
+      <div class="card-img-wrap">
+        <img src="./NOIRE — Official Website_files/photo-1509551388413-e18d0ac5d495" class="main-img">
+        <img src="./NOIRE — Official Website_files/photo-1551854838-212c50b4c184" class="hover-img">
+        <div style="position:absolute;top:10px;left:10px;background:#000;color:#fff;font-size:10px;padding:4px 8px;letter-spacing:.05em;z-index:3;">ONLY 3 LEFT</div>
+        <div class="quick-add">
+          <div class="sizes"><span>Blue · Size 32</span></div>
+          <button class="add-btn" onclick="addToCart(&#39;P103&#39;)">Add to Bag</button>
+        </div>
+      </div>
+      <div class="card-info">
+        <span class="card-name">Straight Leg Jeans</span>
+        <span class="card-price">550 EGP</span>
+      </div>
+    </div>
+  
+    <div class="card">
+      <div class="card-img-wrap">
+        <img src="./NOIRE — Official Website_files/photo-1608256246200-53e635b5b65f" class="main-img">
+        <img src="./NOIRE — Official Website_files/photo-1543163521-1bf539c55dd2" class="hover-img">
+        
+        <div class="quick-add">
+          <div class="sizes"><span>White · Size 42</span></div>
+          <button class="add-btn" onclick="addToCart(&#39;P104&#39;)">Add to Bag</button>
+        </div>
+      </div>
+      <div class="card-info">
+        <span class="card-name">Chunky White Sneakers</span>
+        <span class="card-price">600 EGP</span>
+      </div>
+    </div>
+  
+    <div class="card">
+      <div class="card-img-wrap">
+        <img src="./NOIRE — Official Website_files/photo-1594223274512-ad4803739b7c" class="main-img">
+        <img src="./NOIRE — Official Website_files/photo-1550639525-c97d455acf70" class="hover-img">
+        
+        <div class="quick-add">
+          <div class="sizes"><span>Taupe · Size L</span></div>
+          <button class="add-btn" onclick="addToCart(&#39;P105&#39;)">Add to Bag</button>
+        </div>
+      </div>
+      <div class="card-info">
+        <span class="card-name">Wool Blend Long Coat</span>
+        <span class="card-price">1200 EGP</span>
+      </div>
+    </div>
+  
+    <div class="card">
+      <div class="card-img-wrap">
+        <img src="./NOIRE — Official Website_files/photo-1509551388413-e18d0ac5d495" class="main-img">
+        <img src="./NOIRE — Official Website_files/photo-1551854838-212c50b4c184" class="hover-img">
+        
+        <div class="quick-add">
+          <div class="sizes"><span>Burgundy · Size M</span></div>
+          <button class="add-btn" onclick="addToCart(&#39;P106&#39;)">Add to Bag</button>
+        </div>
+      </div>
+      <div class="card-info">
+        <span class="card-name">Satin Midi Dress</span>
+        <span class="card-price">750 EGP</span>
+      </div>
+    </div>
+  
+    <div class="card">
+      <div class="card-img-wrap">
+        <img src="./NOIRE — Official Website_files/photo-1509551388413-e18d0ac5d495" class="main-img">
+        <img src="./NOIRE — Official Website_files/photo-1551854838-212c50b4c184" class="hover-img">
+        
+        <div class="quick-add">
+          <div class="sizes"><span>Blue · Size S</span></div>
+          <button class="add-btn" onclick="addToCart(&#39;P107&#39;)">Add to Bag</button>
+        </div>
+      </div>
+      <div class="card-info">
+        <span class="card-name">Cropped Denim Jacket</span>
+        <span class="card-price">650 EGP</span>
+      </div>
+    </div>
+  
+    <div class="card">
+      <div class="card-img-wrap">
+        <img src="./NOIRE — Official Website_files/photo-1620799140408-edc6dcb6d633" class="main-img">
+        <img src="./NOIRE — Official Website_files/photo-1576995853123-5a10305d93c0" class="hover-img">
+        
+        <div class="quick-add">
+          <div class="sizes"><span>Stone · Size M</span></div>
+          <button class="add-btn" onclick="addToCart(&#39;P108&#39;)">Add to Bag</button>
+        </div>
+      </div>
+      <div class="card-info">
+        <span class="card-name">Cable Knit Sweater</span>
+        <span class="card-price">480 EGP</span>
+      </div>
+    </div>
+  
+    <div class="card">
+      <div class="card-img-wrap">
+        <img src="./NOIRE — Official Website_files/photo-1509551388413-e18d0ac5d495" class="main-img">
+        <img src="./NOIRE — Official Website_files/photo-1551854838-212c50b4c184" class="hover-img">
+        
+        <div class="quick-add">
+          <div class="sizes"><span>Charcoal · Size L</span></div>
+          <button class="add-btn" onclick="addToCart(&#39;P109&#39;)">Add to Bag</button>
+        </div>
+      </div>
+      <div class="card-info">
+        <span class="card-name">Pleated Wide Trousers</span>
+        <span class="card-price">520 EGP</span>
+      </div>
+    </div>
+  
+    <div class="card">
+      <div class="card-img-wrap">
+        <img src="./NOIRE — Official Website_files/photo-1608256246200-53e635b5b65f" class="main-img">
+        <img src="./NOIRE — Official Website_files/photo-1543163521-1bf539c55dd2" class="hover-img">
+        <div style="position:absolute;top:10px;left:10px;background:#000;color:#fff;font-size:10px;padding:4px 8px;letter-spacing:.05em;z-index:3;">ONLY 4 LEFT</div>
+        <div class="quick-add">
+          <div class="sizes"><span>Brown · Size 40</span></div>
+          <button class="add-btn" onclick="addToCart(&#39;P110&#39;)">Add to Bag</button>
+        </div>
+      </div>
+      <div class="card-info">
+        <span class="card-name">Leather Ankle Boots</span>
+        <span class="card-price">890 EGP</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHATBOT UI -->
+<button class="chat-icon" id="chat-toggle">💬</button>
+<div class="chat-window" id="chat-window">
+  <div class="chat-head">
+    <span>Virtual Assistant</span>
+    <button id="chat-close">✕</button>
+  </div>
+  <div class="chat-body" id="chat-messages">
+    <div class="msg bot">Welcome to NOIRE. How can I assist you today?</div>
+  </div>
+  <form class="chat-foot" id="chat-form">
+    <input type="text" id="chat-input" placeholder="Type a message..." required="" autocomplete="off">
+    <button type="submit">SEND</button>
+  </form>
+</div>
+
+<!-- CART UI -->
+<div class="cart-overlay" id="cart-overlay"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-head">
+    <span>SHOPPING BAG</span>
+    <button id="close-cart">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items"></div>
+  <div class="cart-foot">
+    <div class="total"><span>TOTAL</span><span id="cart-total">0 EGP</span></div>
+    <button class="checkout-btn" id="checkout-btn">Continue</button>
+  </div>
+</div>
+
+<!-- SHIPPING DETAILS MODAL -->
+<div class="ship-modal" id="ship-modal">
+  <div class="ship-modal-bg" id="ship-modal-bg"></div>
+  <div class="ship-modal-box">
+    <button class="ship-modal-close" id="ship-modal-close">✕</button>
+    <h3>بيانات الشحن</h3>
+    <div class="ship-sub">هيتبعت طلبك مباشرة لفريق التحضير</div>
+    <form id="order-form">
+      <div class="ship-field">
+        <label>الاسم بالكامل</label>
+        <input type="text" id="cust-name" required="">
+      </div>
+      <div class="ship-field">
+        <label>رقم الموبايل</label>
+        <input type="tel" id="cust-phone" required="">
+      </div>
+      <div class="ship-field">
+        <label>العنوان بالتفصيل</label>
+        <textarea id="cust-address" required=""></textarea>
+      </div>
+      <button type="submit" class="submit-order" id="submit-order-btn">تأكيد الطلب</button>
+      <div class="ship-status" id="ship-status"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+/* =========================================
+   1. WEBHOOKS CONFIGURATION
+========================================= */
+const WEBHOOK_URL_ORDERS = "https://shimaaelzaidey.app.n8n.cloud/webhook/98428b75-30ab-4979-9f6b-2c32d56f5abb";
+const WEBHOOK_URL_CHATBOT = "https://shimaaelzaidey.app.n8n.cloud/webhook/9bb6085b-0ee4-423c-a0b3-36c113adfac7";
+
+/* --- PRODUCTS DATA (from Inventory_Products.xlsx) --- */
+/* كل صف في الاكسيل SKU لمقاس/لون واحد، فمفيش اختيار مقاس هنا — البيانات مطابقة تمامًا للشيت */
+const IMG_BY_CATEGORY = {
+  Hoodies:   ["https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=600", "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=600"],
+  Tops:      ["https://images.unsplash.com/photo-1594223274512-ad4803739b7c?w=600", "https://images.unsplash.com/photo-1550639525-c97d455acf70?w=600"],
+  Denim:     ["https://images.unsplash.com/photo-1509551388413-e18d0ac5d495?w=600", "https://images.unsplash.com/photo-1551854838-212c50b4c184?w=600"],
+  Shoes:     ["https://images.unsplash.com/photo-1608256246200-53e635b5b65f?w=600", "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600"],
+  Outerwear: ["https://images.unsplash.com/photo-1594223274512-ad4803739b7c?w=600", "https://images.unsplash.com/photo-1550639525-c97d455acf70?w=600"],
+  Dresses:   ["https://images.unsplash.com/photo-1509551388413-e18d0ac5d495?w=600", "https://images.unsplash.com/photo-1551854838-212c50b4c184?w=600"],
+  Knitwear:  ["https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=600", "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=600"],
+  Trousers:  ["https://images.unsplash.com/photo-1509551388413-e18d0ac5d495?w=600", "https://images.unsplash.com/photo-1551854838-212c50b4c184?w=600"]
+};
+
+const RAW_INVENTORY = [
+  { id:"P101", name:"Black Oversized Hoodie", cat:"Hoodies",   color:"Black",    size:"M",  price:450,  stock:20 },
+  { id:"P102", name:"Ribbed Long Sleeve Top", cat:"Tops",      color:"Beige",    size:"S",  price:250,  stock:15 },
+  { id:"P103", name:"Straight Leg Jeans",     cat:"Denim",     color:"Blue",     size:"32", price:550,  stock:3  },
+  { id:"P104", name:"Chunky White Sneakers",  cat:"Shoes",     color:"White",    size:"42", price:600,  stock:10 },
+  { id:"P105", name:"Wool Blend Long Coat",   cat:"Outerwear", color:"Taupe",    size:"L",  price:1200, stock:8  },
+  { id:"P106", name:"Satin Midi Dress",       cat:"Dresses",   color:"Burgundy", size:"M",  price:750,  stock:12 },
+  { id:"P107", name:"Cropped Denim Jacket",   cat:"Denim",     color:"Blue",     size:"S",  price:650,  stock:6  },
+  { id:"P108", name:"Cable Knit Sweater",     cat:"Knitwear",  color:"Stone",    size:"M",  price:480,  stock:18 },
+  { id:"P109", name:"Pleated Wide Trousers",  cat:"Trousers",  color:"Charcoal", size:"L",  price:520,  stock:9  },
+  { id:"P110", name:"Leather Ankle Boots",    cat:"Shoes",     color:"Brown",    size:"40", price:890,  stock:4  }
+];
+
+const products = RAW_INVENTORY.map(p => ({
+  ...p,
+  img1: IMG_BY_CATEGORY[p.cat][0],
+  img2: IMG_BY_CATEGORY[p.cat][1]
+}));
+
+const CATEGORIES = ["all", ...new Set(products.map(p => p.cat))];
+
+function renderTabs() {
+  document.getElementById("tabs").innerHTML = CATEGORIES.map(c =>
+    `<button class="tab ${c === activeCat ? 'active' : ''}" data-cat="${c}">${c === "all" ? "All" : c}</button>`
+  ).join("");
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      activeCat = tab.dataset.cat;
+      renderTabs();
+      renderGrid();
+    });
+  });
+}
+
+/* --- CART LOGIC --- */
+let cart = [];
+let activeCat = "all";
+
+function renderGrid() {
+  const grid = document.getElementById("grid");
+  const filtered = activeCat === "all" ? products : products.filter(p => p.cat === activeCat);
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="card">
+      <div class="card-img-wrap">
+        <img src="${p.img1}" class="main-img">
+        <img src="${p.img2}" class="hover-img">
+        ${p.stock < 5 ? `<div style="position:absolute;top:10px;left:10px;background:#000;color:#fff;font-size:10px;padding:4px 8px;letter-spacing:.05em;z-index:3;">ONLY ${p.stock} LEFT</div>` : ""}
+        <div class="quick-add">
+          <div class="sizes"><span>${p.color} · Size ${p.size}</span></div>
+          <button class="add-btn" onclick="addToCart('${p.id}')">Add to Bag</button>
+        </div>
+      </div>
+      <div class="card-info">
+        <span class="card-name">${p.name}</span>
+        <span class="card-price">${p.price} EGP</span>
+      </div>
+    </div>
+  `).join("");
+}
+
+function addToCart(id) {
+  const product = products.find(p => p.id === id);
+  cart.push({ ...product, selectedSize: product.size });
+  updateCartUI();
+  document.getElementById("cart-drawer").classList.add("open");
+  document.getElementById("cart-overlay").classList.add("open");
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const itemsContainer = document.getElementById("cart-items");
+  const badge = document.getElementById("cart-badge");
+
+  if(cart.length > 0) {
+    badge.style.display = "flex"; badge.textContent = cart.length;
+  } else {
+    badge.style.display = "none";
+  }
+
+  itemsContainer.innerHTML = cart.map((item, i) => `
+    <div class="cart-item">
+      <img src="${item.img1}">
+      <div class="cart-item-info">
+        <span class="cart-item-name">${item.name}</span>
+        <span class="cart-item-price">${item.price} EGP | Size: ${item.selectedSize}</span>
+        <button class="remove-btn" onclick="removeFromCart(${i})">Remove</button>
+      </div>
+    </div>
+  `).join("");
+
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
+  document.getElementById("cart-total").textContent = total + " EGP";
+}
+
+/* --- UI TOGGLES --- */
+document.getElementById("open-cart").onclick = () => {
+  document.getElementById("cart-drawer").classList.add("open");
+  document.getElementById("cart-overlay").classList.add("open");
+};
+document.getElementById("close-cart").onclick = document.getElementById("cart-overlay").onclick = () => {
+  document.getElementById("cart-drawer").classList.remove("open");
+  document.getElementById("cart-overlay").classList.remove("open");
+};
+
+document.getElementById("chat-toggle").onclick = () => document.getElementById("chat-window").classList.toggle("open");
+document.getElementById("chat-close").onclick = () => document.getElementById("chat-window").classList.remove("open");
+
+/* --- CHATBOT INTEGRATION --- */
+const chatForm = document.getElementById("chat-form");
+const chatInput = document.getElementById("chat-input");
+const chatMessages = document.getElementById("chat-messages");
+
+chatForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const text = chatInput.value.trim();
+  if(!text) return;
+
+  chatMessages.innerHTML += `<div class="msg user">${text}</div>`;
+  chatInput.value = "";
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  const loadingId = "load-" + Date.now();
+  chatMessages.innerHTML += `<div class="msg bot" id="${loadingId}">...</div>`;
+
+  try {
+    const res = await fetch(WEBHOOK_URL_CHATBOT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text, sessionId: "user-123" })
+    });
+
+    if (res.status === 404) {
+      document.getElementById(loadingId).innerText = "الـ Workflow مش شغال (404) — تأكدي إن الـ Workflow في n8n مفعّل (Active).";
+      return;
+    }
+    if (!res.ok) {
+      document.getElementById(loadingId).innerText = "خطأ من السيرفر (كود " + res.status + ").";
+      return;
+    }
+
+    const data = await res.json();
+    // n8n should return JSON like: { "output": "الرد بتاع البوت" }
+    document.getElementById(loadingId).innerText = data.output || data.text || "Received.";
+  } catch (err) {
+    document.getElementById(loadingId).innerText = "تعذّر الاتصال بالسيرفر — تأكدي من اتصال الإنترنت أو حالة الـ Workflow.";
+  }
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+});
+
+/* --- CHECKOUT INTEGRATION --- */
+const shipModal = document.getElementById("ship-modal");
+function openShipModal(){ shipModal.classList.add("open"); }
+function closeShipModal(){ shipModal.classList.remove("open"); document.getElementById("ship-status").textContent = ""; }
+
+document.getElementById("ship-modal-close").addEventListener("click", closeShipModal);
+document.getElementById("ship-modal-bg").addEventListener("click", closeShipModal);
+
+document.getElementById("checkout-btn").addEventListener("click", () => {
+  if(cart.length === 0) return;
+  openShipModal();
+});
+
+document.getElementById("order-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const submitBtn = document.getElementById("submit-order-btn");
+  const statusEl = document.getElementById("ship-status");
+  submitBtn.disabled = true;
+  statusEl.className = "ship-status";
+  statusEl.textContent = "جاري إرسال الطلب...";
+
+  const payload = {
+    order_id: "ORD-" + Date.now(),
+    customer_name: document.getElementById("cust-name").value.trim(),
+    phone: document.getElementById("cust-phone").value.trim(),
+    address: document.getElementById("cust-address").value.trim(),
+    order_date: new Date().toISOString(),
+    items: cart.map(item => ({
+      product_id: item.id,
+      product_name: item.name,
+      color: item.color,
+      size: item.selectedSize,
+      price: item.price,
+      quantity: 1
+    })),
+    total: cart.reduce((sum, item) => sum + item.price, 0)
+  };
+
+  try {
+    const res = await fetch(WEBHOOK_URL_ORDERS, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.status === 404) {
+      statusEl.className = "ship-status err";
+      statusEl.textContent = "الـ Workflow مش شغال (404) — تأكدي إن الـ Workflow في n8n مفعّل (Active).";
+      return;
+    }
+    if (!res.ok) {
+      statusEl.className = "ship-status err";
+      statusEl.textContent = "خطأ من السيرفر (كود " + res.status + ").";
+      return;
+    }
+
+    statusEl.className = "ship-status ok";
+    statusEl.textContent = "تم استلام طلبك بنجاح! رقم الأوردر: " + payload.order_id;
+    cart = [];
+    updateCartUI();
+    setTimeout(() => {
+      closeShipModal();
+      document.getElementById("cart-drawer").classList.remove("open");
+      document.getElementById("cart-overlay").classList.remove("open");
+      document.getElementById("order-form").reset();
+    }, 2000);
+  } catch (err) {
+    statusEl.className = "ship-status err";
+    statusEl.textContent = "تعذّر الاتصال بالسيرفر — تأكدي من اتصال الإنترنت أو حالة الـ Workflow.";
+  } finally {
+    submitBtn.disabled = false;
+  }
+});
+
+renderTabs();
+renderGrid();
+</script>
+
+
+</body></html>
