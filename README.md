@@ -26,7 +26,7 @@ n8n · Google Gemini · Google Sheets · Telegram Bot API · Gmail · Webhooks �
 ## 1️⃣ AI Chatbot
 Webhook → AI Agent (Gemini + Simple Memory) → reads Orders & Inventory sheets → Respond to Webhook
 
-![Workflow](ChatBot/Workflow_of_ChatBot.png)
+![Workflow](ChatBot/Workflow%20of%20ChatBot.png)
 
 <p>
   <img src="ChatBot/chat1.png" width="24%">
@@ -42,52 +42,52 @@ Website checkout → Webhook → Save order in Google Sheets → Telegram notifi
 
 **Website UI**
 <p>
-  <img src="Order/UI_1.png" width="24%">
-  <img src="Order/UI_2.png" width="24%">
-  <img src="Order/UI_3.png" width="24%">
-  <img src="Order/UI_4.png" width="24%">
+  <img src="Order/UI%201.png" width="24%">
+  <img src="Order/UI%202.png" width="24%">
+  <img src="Order/UI%203.png" width="24%">
+  <img src="Order/UI%204.png" width="24%">
 </p>
 
 **Cart & Checkout**
 
 ![Cart](Order/CART.png)
-![Checkout](Order/Check_out.png)
+![Checkout](Order/Check%20out.png)
 
 **Saving the order**
 
-![Commit](Order/Commit_order.png)
-![Save](Order/Save_order_in_sheet.png)
-![Append](Order/Append_the_new_orders.png)
+![Commit](Order/Commit%20order.png)
+![Save](Order/Save-%20order%20in%20sheet.png)
+![Append](Order/Append%20the%20new%20orders.png)
 
 **Telegram notification**
 
-![Bot 1](Order/bot_message_1.png)
-![Bot 2](Order/bot_message_2.png)
+![Bot 1](Order/bot%20message%201.png)
+![Bot 2](Order/bot%20message%202.png)
 
 ## 3️⃣ Inventory Management
 Receive Order → Separate items → Get Current Stock → Calculate New Stock → Update Inventory
 
 ![Workflow](Inventory/Workflow.png)
-![Get stock](Inventory/Get_current_stock.png)
-![Calculate](Inventory/calculate_new_stock.png)
-![Update](Inventory/update__inventory.png)
+![Get stock](Inventory/Get%20current%20stock.png)
+![Calculate](Inventory/calculate%20new%20stock.png)
+![Update](Inventory/update%20%20inventory.png)
 
 | Before | After |
 |---|---|
-| ![Before](Inventory/Inventory_sheet_befor_update.png) | ![After](Inventory/Inventory_sheet_after_update.png) |
+| ![Before](Inventory/Inventory%20sheet%20befor%20update.png) | ![After](Inventory/Inventory%20sheet%20after%20update.png) |
 
 ## 4️⃣ Daily Low Stock Alert
 Schedule (12 AM) → Read Inventory → Filter low stock → Summarize → Email the manager
 
-![Workflow](Daily_Alert/Workflow.png)
-![Sheet](Daily_Alert/sheet.png)
-![Filter](Daily_Alert/Filter.png)
-![Email](Daily_Alert/email.png)
+![Workflow](Daily%20Alert/Workflow.png)
+![Sheet](Daily%20Alert/sheet.png)
+![Filter](Daily%20Alert/Filter.png)
+![Email](Daily%20Alert/email.png)
 
 ---
 
 ## 🚀 How to Run
-1. Import `Final_Project.json` into your n8n instance.
+1. Import `Final Project.json` into your n8n instance.
 2. Connect your credentials (Google Sheets, Gemini, Telegram, Gmail).
 3. Create a Google Sheet with two tabs: **Inventory** and **Orders**.
 4. Update the Webhook URLs in the website code.
